@@ -1,1 +1,94 @@
-{}
+{
+  "501210016926094": {
+    "event_id": "501210016926094",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/d95771ece44e4f86a37e1541faa36483.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926094",
+    "movie_title": "실낙원",
+    "progress_end_date": "2026-11-01",
+    "progress_start_date": "2026-10-26",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "open_time_kst": "2026-10-26T16:00:00+09:00",
+        "price_info": "2,000원 관람권 (선착순 2,000명 - 마감)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "2,000원 관람권 (선착순 2,000명 - 마감)",
+    "title": "<실낙원> 3차 무비싸다구",
+    "updated_at_kst": "2026-10-27T21:36:34+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926094"
+  },
+  "501210016926096": {
+    "event_id": "501210016926096",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/9568364b1ba14c1aba51f2a241cbaa79.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926096",
+    "movie_title": "최종면접",
+    "progress_end_date": "2026-11-10",
+    "progress_start_date": "2026-10-27",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "open_time_kst": "2026-10-27T11:00:00+09:00",
+        "price_info": "2,000원 관람권 (선착순 4,000명 - 마감)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "2,000원 관람권 (선착순 4,000명 - 마감)",
+    "title": "<최종면접> 무비싸다구*",
+    "updated_at_kst": "2026-10-27T21:36:32+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926096"
+  },
+  "501210016926097": {
+    "event_id": "501210016926097",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/63d1f300250543b093075f25af3b084e.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926097",
+    "movie_title": "브루넬로: 우아한 선구자",
+    "progress_end_date": "2026-11-03",
+    "progress_start_date": "2026-10-27",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "open_time_kst": "2026-10-27T14:00:00+09:00",
+        "price_info": "0원 관람권 (선착순 2,500명 - 마감)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "0원 관람권 (선착순 2,500명 - 마감)",
+    "title": "<브루넬로> 무비싸다구",
+    "updated_at_kst": "2026-10-27T21:36:31+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926097"
+  },
+  "501210016926098": {
+    "event_id": "501210016926098",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/b83d54de44fb460784660915ddfd14f9.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926098",
+    "movie_title": "그대, 별처럼",
+    "progress_end_date": "2026-11-03",
+    "progress_start_date": "2026-10-27",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "open_time_kst": "2026-10-27T16:00:00+09:00",
+        "price_info": "0원 관람권 (선착순 800명 - 마감) / 2,000원 관람권 (선착순 2,000명 - 마감)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "0원 관람권 (선착순 800명 - 마감) / 2,000원 관람권 (선착순 2,000명 - 마감)",
+    "title": "<그대별처럼> 2차 무비싸다구",
+    "updated_at_kst": "2026-10-27T21:36:30+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926098"
+  }
+}
