@@ -1,0 +1,82 @@
+name: Lotte Cinema Movie Saddagu Alarm Bot
+
+on:
+  schedule:
+    # Runs at :05 and :35 during 07:00 - 22:59 KST (22:00 - 13:59 UTC)
+    # Wakes up ~20-25 minutes before :00 (T-60m) and :55 (T-5m) alarms to absorb GitHub Actions cron jitter
+    - cron: "5,35 22-23,0-13 * * *"
+  workflow_dispatch:
+    inputs:
+      action_type:
+        description: "Action to run"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - all
+          - crawl
+          - alarm
+          - test-telegram
+      force_reparse:
+        description: "Force re-parsing existing events with Gemini"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: movie-saddagu-bot
+  cancel-in-progress: false
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Movie Saddagu Bot
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ "${{ github.event.inputs.action_type }}" = "test-telegram" ]; then
+            python -m src.main --test-telegram
+          else
+            MODE="${{ github.event.inputs.action_type }}"
+            if [ -z "$MODE" ]; then
+              MODE="all"
+            fi
+            EXTRA_ARGS=""
+            if [ "${{ github.event.inputs.force_reparse }}" = "true" ]; then
+              EXTRA_ARGS="--force-reparse"
+            fi
+            python -m src.main --mode "$MODE" --lookahead-minutes 30 $EXTRA_ARGS
+          fi
+
+      - name: Commit and push updated event state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet data/events.json; then
+            git add data/events.json
+            git commit -m "chore(state): update 무비싸다구 events and alarm state [skip ci]"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          else
+            echo "No state changes in data/events.json."
+          fi
