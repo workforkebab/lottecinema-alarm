@@ -2,7 +2,20 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+import socket
 from zoneinfo import ZoneInfo
+
+# Prefer IPv4 over IPv6 to avoid 15s IPv6 blackhole/PMTU timeouts to api.telegram.org on GitHub Actions runners
+_orig_getaddrinfo = socket.getaddrinfo
+
+
+def _ipv4_preferred_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):  # type: ignore[no-untyped-def]
+    res = _orig_getaddrinfo(host, port, family, type, proto, flags)
+    ipv4_res = [r for r in res if r[0] == socket.AF_INET]
+    return ipv4_res if ipv4_res else res
+
+
+socket.getaddrinfo = _ipv4_preferred_getaddrinfo
 
 # Base directories
 ROOT_DIR = Path(__file__).resolve().parent.parent

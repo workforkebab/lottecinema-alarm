@@ -8,6 +8,11 @@ from typing import Any
 import urllib.error
 import urllib.request
 
+try:
+    import requests as _requests
+except ImportError:
+    _requests = None  # type: ignore[assignment]
+
 from src.config import KST, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
 
 logger = logging.getLogger(__name__)
@@ -103,17 +108,32 @@ def send_telegram_message(
     if reply_markup:
         payload["reply_markup"] = reply_markup
 
-    encoded_payload = json.dumps(payload, ensure_ascii=False).encode("utf-8")
-    req = urllib.request.Request(
-        url,
-        data=encoded_payload,
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
-
     try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
+        if _requests is not None:
+            resp = _requests.post(
+                url,
+                json=payload,
+                headers={"Connection": "close"},
+                timeout=(5, 15),
+            )
+            if resp.status_code != 200:
+                logger.error("Telegram API HTTP error (%s): %s", resp.status_code, resp.text)
+                return False
+            data = resp.json()
+        else:
+            encoded_payload = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+            req = urllib.request.Request(
+                url,
+                data=encoded_payload,
+                headers={
+                    "Content-Type": "application/json",
+                    "Connection": "close",
+                },
+                method="POST",
+            )
+            with urllib.request.urlopen(req, timeout=15) as raw_resp:
+                data = json.loads(raw_resp.read().decode("utf-8"))
+
         if not data.get("ok"):
             logger.error("Telegram response not ok: %s", data)
             return False
