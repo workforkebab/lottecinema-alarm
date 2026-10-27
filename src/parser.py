@@ -276,32 +276,52 @@ def parse_event_with_gemini(
 def extract_event_schedules(event_detail: dict[str, Any]) -> dict[str, Any]:
     """
     Extract structured schedule information from an event detail record.
-    Tries Gemini Vision first, then falls back to regex text extraction.
+    1) Uses structured `api_schedules` from `GetSpeedEventDetailMulti` when available.
+    2) Otherwise tries Gemini Vision on the banner image, then falls back to regex text extraction.
     Returns an enriched event record ready for persistence in `data/events.json`.
     """
-    gemini_result = parse_event_with_gemini(event_detail)
     normalized_schedules: list[dict[str, Any]] = []
     seen_open_times: set[str] = set()
 
-    movie_title = event_detail.get("title", "")
+    movie_title = event_detail.get("movie_title") or event_detail.get("title", "")
     summary = "선착순 무비싸다구 할인 쿠폰"
 
-    if gemini_result:
-        movie_title = gemini_result.get("movie_title") or movie_title
-        summary = gemini_result.get("summary") or summary
-        for item in gemini_result.get("schedules") or []:
-            iso_time = normalize_kst_iso(item.get("open_time_kst", ""))
-            if iso_time and iso_time not in seen_open_times:
-                seen_open_times.add(iso_time)
-                normalized_schedules.append(
-                    {
-                        "round_label": item.get("round_label") or "티켓 오픈",
-                        "open_time_kst": iso_time,
-                        "price_info": item.get("price_info") or summary,
-                        "notified_60m": False,
-                        "notified_5m": False,
-                    }
-                )
+    # 1. Use structured API schedules (e.g. from GetSpeedEventDetailMulti) if present
+    for item in event_detail.get("api_schedules") or []:
+        iso_time = normalize_kst_iso(item.get("open_time_kst", ""))
+        if iso_time and iso_time not in seen_open_times:
+            seen_open_times.add(iso_time)
+            price_info = item.get("price_info") or summary
+            summary = price_info
+            normalized_schedules.append(
+                {
+                    "round_label": item.get("round_label") or "무비싸다구 오픈",
+                    "open_time_kst": iso_time,
+                    "price_info": price_info,
+                    "notified_60m": False,
+                    "notified_5m": False,
+                }
+            )
+
+    # 2. If API schedules are not present, call Gemini Vision on the banner image
+    if not normalized_schedules:
+        gemini_result = parse_event_with_gemini(event_detail)
+        if gemini_result:
+            movie_title = gemini_result.get("movie_title") or movie_title
+            summary = gemini_result.get("summary") or summary
+            for item in gemini_result.get("schedules") or []:
+                iso_time = normalize_kst_iso(item.get("open_time_kst", ""))
+                if iso_time and iso_time not in seen_open_times:
+                    seen_open_times.add(iso_time)
+                    normalized_schedules.append(
+                        {
+                            "round_label": item.get("round_label") or "티켓 오픈",
+                            "open_time_kst": iso_time,
+                            "price_info": item.get("price_info") or summary,
+                            "notified_60m": False,
+                            "notified_5m": False,
+                        }
+                    )
 
     if not normalized_schedules:
         combined_text = "\n".join(

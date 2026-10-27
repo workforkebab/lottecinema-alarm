@@ -63,7 +63,7 @@ def sync_events(
         needs_parse = (
             force_reparse
             or existing is None
-            or (not existing.get("schedules") and bool(GEMINI_API_KEY))
+            or not existing.get("schedules")
         )
 
         if not needs_parse:
@@ -100,6 +100,48 @@ def sync_events(
     return modified
 
 
+def send_today_events_notification(
+    state: dict[str, dict[str, Any]],
+    dry_run: bool = False,
+) -> bool:
+    """
+    Crawl Lotte Cinema and immediately send Telegram notification(s) for all
+    '무비싸다구' events that opened today (in KST) to verify end-to-end crawling
+    and Telegram delivery. Falls back to the latest discovered event if none opened today.
+    """
+    sync_events(state, force_reparse=False)
+    today_str = datetime.now(KST).strftime("%Y-%m-%d")
+
+    today_matches: list[tuple[dict[str, Any], dict[str, Any]]] = []
+    all_matches: list[tuple[dict[str, Any], dict[str, Any]]] = []
+
+    for eid, event_record in sorted(state.items()):
+        schedules = event_record.get("schedules") or []
+        for sched in schedules:
+            open_iso = str(sched.get("open_time_kst") or "")
+            all_matches.append((event_record, sched))
+            if open_iso.startswith(today_str) or str(event_record.get("progress_start_date", "")).startswith(today_str):
+                today_matches.append((event_record, sched))
+
+    targets = today_matches if today_matches else all_matches[-1:]
+    if not targets:
+        logger.warning("No '무비싸다구' events found on Lotte Cinema; sending fallback test message.")
+        return send_test_notification(dry_run=dry_run)
+
+    all_ok = True
+    for event_record, sched in targets:
+        text, markup = build_alarm_message(
+            event_record,
+            sched,
+            minutes_before=5,
+        )
+        ok = send_telegram_message(text, reply_markup=markup, dry_run=dry_run)
+        if not ok:
+            all_ok = False
+
+    return all_ok
+
+
 def process_upcoming_alarms(
     state: dict[str, dict[str, Any]],
     lookahead_minutes: int = 30,
@@ -128,7 +170,6 @@ def process_upcoming_alarms(
             except ValueError:
                 continue
 
-            # Skip if the ticket drop has already happened
             if open_dt <= now:
                 continue
 
@@ -142,7 +183,6 @@ def process_upcoming_alarms(
                 target_dt = open_dt - timedelta(minutes=minutes_before)
                 diff_seconds = (target_dt - now).total_seconds()
 
-                # Avoid sending the 60m alarm if we are already within 15 minutes of open_dt
                 if minutes_before >= 60 and (open_dt - now).total_seconds() < 15 * 60:
                     continue
 
@@ -164,7 +204,6 @@ def process_upcoming_alarms(
         logger.info("No upcoming alarms within the next %d minutes (now=%s).", lookahead_minutes, now.isoformat())
         return 0
 
-    # Sort chronologically by target alarm timestamp
     due_tasks.sort(key=lambda t: t["target_dt"])
     sent_count = 0
 
@@ -241,7 +280,12 @@ def main() -> int:
     parser.add_argument(
         "--test-telegram",
         action="store_true",
-        help="Send a test Telegram message immediately to verify bot configuration.",
+        help="Crawl Lotte Cinema and send today's real '무비싸다구' event(s) to Telegram for testing.",
+    )
+    parser.add_argument(
+        "--send-today",
+        action="store_true",
+        help="Crawl Lotte Cinema and send today's '무비싸다구' event(s) to Telegram.",
     )
     parser.add_argument(
         "--inspect-event",
@@ -251,16 +295,15 @@ def main() -> int:
     )
 
     args = parser.parse_args()
+    state = load_state()
 
-    if args.test_telegram:
-        ok = send_test_notification(dry_run=args.dry_run)
+    if args.test_telegram or args.send_today:
+        ok = send_today_events_notification(state, dry_run=args.dry_run)
         return 0 if ok else 1
 
     if args.inspect_event:
         inspect_single_event(args.inspect_event)
         return 0
-
-    state = load_state()
 
     if args.mode in ("all", "crawl"):
         sync_events(state, force_reparse=args.force_reparse)
