@@ -113,5 +113,28 @@
     "title": "<수능출제의비밀> 2차 무비싸다구",
     "updated_at_kst": "2026-10-28T16:16:32+09:00",
     "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926099"
+  },
+  "501210016926100": {
+    "event_id": "501210016926100",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/89f635bc09b74eb7a16d5383b02fdfcc.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926100",
+    "movie_title": "실낙원",
+    "progress_end_date": "2026-11-04",
+    "progress_start_date": "2026-10-29",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "open_time_kst": "2026-10-29T16:00:00+09:00",
+        "price_info": "0원 관람권 (선착순 1,145명 / 잔여 1,145매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "0원 관람권 (선착순 1,145명 / 잔여 1,145매)",
+    "title": "<실낙원> 4차 무비싸다구",
+    "updated_at_kst": "2026-10-28T23:22:45+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926100"
   }
 }
