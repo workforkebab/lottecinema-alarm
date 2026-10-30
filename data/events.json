@@ -137,5 +137,28 @@
     "title": "<실낙원> 4차 무비싸다구",
     "updated_at_kst": "2026-10-28T23:22:45+09:00",
     "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926100"
+  },
+  "501210016926101": {
+    "event_id": "501210016926101",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/29171a79fa644170bdfd0be8c4633271.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926101",
+    "movie_title": "낮과 밤은 서로에게",
+    "progress_end_date": "2026-11-10",
+    "progress_start_date": "2026-11-02",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "open_time_kst": "2026-11-02T14:00:00+09:00",
+        "price_info": "0원 관람권 (선착순 850명 / 잔여 850매) / 2,000원 관람권 (선착순 200명 / 잔여 200매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "0원 관람권 (선착순 850명 / 잔여 850매) / 2,000원 관람권 (선착순 200명 / 잔여 200매)",
+    "title": "<낮과밤은서로에게> 무비싸다구",
+    "updated_at_kst": "2026-10-30T17:26:38+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926101"
   }
 }
