@@ -160,5 +160,74 @@
     "title": "<낮과밤은서로에게> 무비싸다구",
     "updated_at_kst": "2026-10-30T17:26:38+09:00",
     "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926101"
+  },
+  "501210016926102": {
+    "event_id": "501210016926102",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/8be0cd19584a4eb998c21cde8884c452.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926102",
+    "movie_title": "변이",
+    "progress_end_date": "2026-11-10",
+    "progress_start_date": "2026-11-03",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "open_time_kst": "2026-11-03T11:00:00+09:00",
+        "price_info": "0원 관람권 (선착순 1,000명 / 잔여 1,000매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "0원 관람권 (선착순 1,000명 / 잔여 1,000매)",
+    "title": "<변이> 무비싸다구",
+    "updated_at_kst": "2026-11-02T10:25:12+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926102"
+  },
+  "501210016926103": {
+    "event_id": "501210016926103",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/3a1e4644da0d489283c00087c3700180.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926103",
+    "movie_title": "최종면접",
+    "progress_end_date": "2026-11-10",
+    "progress_start_date": "2026-11-03",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "open_time_kst": "2026-11-03T14:00:00+09:00",
+        "price_info": "2,000원 관람권 (선착순 3,000명 / 잔여 3,000매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "2,000원 관람권 (선착순 3,000명 / 잔여 3,000매)",
+    "title": "<최종면접> 2차 무비싸다구",
+    "updated_at_kst": "2026-11-02T10:25:10+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926103"
+  },
+  "501210016926104": {
+    "event_id": "501210016926104",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/86e7637b948844758d24b1c6b6e1aef5.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926104",
+    "movie_title": "수능, 출제의 비밀",
+    "progress_end_date": "2026-11-09",
+    "progress_start_date": "2026-11-03",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "open_time_kst": "2026-11-03T16:00:00+09:00",
+        "price_info": "0원 관람권 (선착순 1,500명 / 잔여 1,500매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "0원 관람권 (선착순 1,500명 / 잔여 1,500매)",
+    "title": "<수능출제의비밀> 3차 무비싸다구",
+    "updated_at_kst": "2026-11-02T10:25:09+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926104"
   }
 }
