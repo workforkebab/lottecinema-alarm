@@ -4,13 +4,20 @@ import argparse
 from datetime import datetime, timedelta
 import json
 import logging
+import os
+import subprocess
 import sys
 import time
 from typing import Any
 
-from src.config import ALARM_OFFSETS_MINUTES, EVENTS_FILE, GEMINI_API_KEY, KST
+from src.config import ALARM_OFFSETS_MINUTES, EVENTS_FILE, KST, ROOT_DIR
 from src.crawler import fetch_event_detail, fetch_matching_events
-from src.notifier import build_alarm_message, send_telegram_message, send_test_notification
+from src.notifier import (
+    build_alarm_message,
+    build_new_event_message,
+    send_telegram_message,
+    send_test_notification,
+)
 from src.parser import extract_event_schedules
 
 logging.basicConfig(
@@ -35,24 +42,57 @@ def load_state() -> dict[str, dict[str, Any]]:
         return {}
 
 
-def save_state(state: dict[str, dict[str, Any]]) -> None:
-    """Persist events state to `data/events.json`."""
+def save_state(state: dict[str, dict[str, Any]], push_if_ci: bool = True) -> None:
+    """Persist events state to `data/events.json` and push immediately if running in GitHub Actions."""
     EVENTS_FILE.parent.mkdir(parents=True, exist_ok=True)
     serialized = json.dumps(state, ensure_ascii=False, indent=2, sort_keys=True)
     EVENTS_FILE.write_text(serialized + "\n", encoding="utf-8")
+
+    if push_if_ci and os.getenv("GITHUB_ACTIONS") == "true":
+        try:
+            subprocess.run(
+                ["git", "config", "user.name", "github-actions[bot]"],
+                cwd=ROOT_DIR,
+                check=False,
+            )
+            subprocess.run(
+                ["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"],
+                cwd=ROOT_DIR,
+                check=False,
+            )
+            diff_res = subprocess.run(
+                ["git", "diff", "--quiet", "data/events.json"],
+                cwd=ROOT_DIR,
+                check=False,
+            )
+            if diff_res.returncode != 0:
+                subprocess.run(["git", "add", "data/events.json"], cwd=ROOT_DIR, check=True)
+                subprocess.run(
+                    ["git", "commit", "-m", "chore(state): update 무비싸다구 events and alarm state [skip ci]"],
+                    cwd=ROOT_DIR,
+                    check=True,
+                )
+                ref_name = os.getenv("GITHUB_REF_NAME", "main")
+                subprocess.run(["git", "pull", "--rebase", "origin", ref_name], cwd=ROOT_DIR, check=False)
+                subprocess.run(["git", "push", "origin", f"HEAD:{ref_name}"], cwd=ROOT_DIR, check=False)
+        except Exception as exc:
+            logger.warning("Intermediate git push failed (will retry at job end): %s", exc)
 
 
 def sync_events(
     state: dict[str, dict[str, Any]],
     force_reparse: bool = False,
+    dry_run: bool = False,
 ) -> bool:
     """
     Crawl Lotte Cinema for active '무비싸다구' events, parse any newly discovered
-    events (or previously unparsed events), and update `state`.
+    events (or previously unparsed events), send a discovery announcement for new
+    upcoming events, and update `state`.
     Returns True if `state` was modified.
     """
     modified = False
     matching_items = fetch_matching_events()
+    now = datetime.now(KST)
 
     for item in matching_items:
         eid = str(item.get("EventID", "")).strip()
@@ -81,9 +121,24 @@ def sync_events(
             for sched in extracted.get("schedules", []):
                 prev = old_by_time.get(sched.get("open_time_kst"))
                 if prev:
+                    sched["notified_new"] = bool(prev.get("notified_new", False))
                     for offset in ALARM_OFFSETS_MINUTES:
                         flag = offset["flag"]
                         sched[flag] = bool(prev.get(flag, False))
+
+        # Send immediate announcement for newly discovered future events
+        for sched in extracted.get("schedules", []):
+            open_time_str = sched.get("open_time_kst")
+            if not open_time_str or sched.get("notified_new"):
+                continue
+            try:
+                open_dt = datetime.fromisoformat(open_time_str).astimezone(KST)
+            except ValueError:
+                continue
+            if open_dt > now:
+                text, markup = build_new_event_message(extracted, sched)
+                if send_telegram_message(text, reply_markup=markup, dry_run=dry_run):
+                    sched["notified_new"] = True
 
         state[eid] = extracted
         modified = True
@@ -109,7 +164,7 @@ def send_today_events_notification(
     '무비싸다구' events that opened today (in KST) to verify end-to-end crawling
     and Telegram delivery. Falls back to the latest discovered event if none opened today.
     """
-    sync_events(state, force_reparse=False)
+    sync_events(state, force_reparse=False, dry_run=dry_run)
     today_str = datetime.now(KST).strftime("%Y-%m-%d")
 
     today_matches: list[tuple[dict[str, Any], dict[str, Any]]] = []
@@ -142,21 +197,13 @@ def send_today_events_notification(
     return all_ok
 
 
-def process_upcoming_alarms(
+def _collect_due_tasks(
     state: dict[str, dict[str, Any]],
-    lookahead_minutes: int = 30,
-    grace_past_minutes: int = 20,
-    wait_for_exact_time: bool = True,
-    dry_run: bool = False,
-) -> int:
-    """
-    Check all tracked event schedules for upcoming T-60m (1 hour before) and
-    T-5m (5 minutes before) alarms.
-    If an alarm is within `lookahead_minutes`, optionally sleeps until the exact
-    target timestamp, sends the Telegram message, and updates `state`.
-    Returns the number of notifications sent.
-    """
-    now = datetime.now(KST)
+    now: datetime,
+    lookahead_minutes: int,
+    grace_past_minutes: int,
+) -> list[dict[str, Any]]:
+    """Find all unsent T-60m and T-5m alarms within the [now - grace_past, now + lookahead] window."""
     due_tasks: list[dict[str, Any]] = []
 
     for eid, event_record in state.items():
@@ -183,7 +230,8 @@ def process_upcoming_alarms(
                 target_dt = open_dt - timedelta(minutes=minutes_before)
                 diff_seconds = (target_dt - now).total_seconds()
 
-                if minutes_before >= 60 and (open_dt - now).total_seconds() < 15 * 60:
+                # Avoid sending the 60m alarm if we are already within 12 minutes of open_dt
+                if minutes_before >= 60 and (open_dt - now).total_seconds() < 12 * 60:
                     continue
 
                 if -grace_past_minutes * 60 <= diff_seconds <= lookahead_minutes * 60:
@@ -200,41 +248,86 @@ def process_upcoming_alarms(
                         }
                     )
 
-    if not due_tasks:
-        logger.info("No upcoming alarms within the next %d minutes (now=%s).", lookahead_minutes, now.isoformat())
-        return 0
-
     due_tasks.sort(key=lambda t: t["target_dt"])
+    return due_tasks
+
+
+def process_upcoming_alarms(
+    state: dict[str, dict[str, Any]],
+    lookahead_minutes: int = 330,
+    grace_past_minutes: int = 45,
+    wait_for_exact_time: bool = True,
+    dry_run: bool = False,
+) -> int:
+    """
+    Check all tracked event schedules for upcoming T-60m (1 hour before) and
+    T-5m (5 minutes before) alarms within `lookahead_minutes` (default 5.5 hours,
+    absorbing GitHub Actions' 6-hour cron throttling).
+    Sleeps in chunks (re-syncing Lotte Cinema every 10 minutes while waiting),
+    fires each alarm at the exact target timestamp, and updates `state`.
+    """
     sent_count = 0
 
-    for task in due_tasks:
-        target_dt: datetime = task["target_dt"]
-        current_now = datetime.now(KST)
-        wait_seconds = (target_dt - current_now).total_seconds()
+    while True:
+        now = datetime.now(KST)
+        due_tasks = _collect_due_tasks(state, now, lookahead_minutes, grace_past_minutes)
+
+        if not due_tasks:
+            logger.info(
+                "No upcoming alarms within the next %d minutes (now=%s).",
+                lookahead_minutes,
+                now.isoformat(),
+            )
+            break
+
+        next_task = due_tasks[0]
+        target_dt: datetime = next_task["target_dt"]
+        wait_seconds = (target_dt - now).total_seconds()
 
         if wait_for_exact_time and wait_seconds > 0:
+            # Sleep in at most 10-minute chunks so we can re-crawl for newly posted events
+            chunk_seconds = min(wait_seconds, 600.0)
             logger.info(
-                "Upcoming %d-min alarm for '%s' at %s. Sleeping %.1f seconds until exact alarm time...",
-                task["minutes_before"],
-                task["event_record"].get("title"),
+                "Next alarm: %d-min before '%s' at %s (%.1fs away). Sleeping %.1fs...",
+                next_task["minutes_before"],
+                next_task["event_record"].get("title"),
                 target_dt.isoformat(),
                 wait_seconds,
+                chunk_seconds,
             )
-            time.sleep(wait_seconds)
+            time.sleep(chunk_seconds)
+            if wait_seconds > 600.0:
+                sync_events(state, force_reparse=False, dry_run=dry_run)
+                continue
 
+        # Target time reached (or already within grace window) — send the alarm now!
+        minutes_until_open = max(
+            1,
+            round((next_task["open_dt"] - datetime.now(KST)).total_seconds() / 60),
+        )
+        display_minutes = (
+            60 if next_task["minutes_before"] >= 60 and minutes_until_open >= 45 else minutes_until_open
+        )
         text, markup = build_alarm_message(
-            task["event_record"],
-            task["schedule_item"],
-            minutes_before=task["minutes_before"],
+            next_task["event_record"],
+            next_task["schedule_item"],
+            minutes_before=display_minutes if next_task["minutes_before"] < 60 else 60,
         )
         ok = send_telegram_message(text, reply_markup=markup, dry_run=dry_run)
         if ok:
-            task["schedule_item"][task["flag"]] = True
-            task["schedule_item"][f"{task['flag']}_sent_at"] = (
+            next_task["schedule_item"][next_task["flag"]] = True
+            next_task["schedule_item"][f"{next_task['flag']}_sent_at"] = (
                 datetime.now(KST).replace(microsecond=0).isoformat()
             )
             save_state(state)
             sent_count += 1
+        else:
+            logger.error("Failed to send alarm for %s; breaking to avoid tight loop.", next_task["event_id"])
+            break
+
+        # If not waiting for exact time (e.g., unit test or --no-wait), continue to next task immediately
+        if not wait_for_exact_time:
+            continue
 
     return sent_count
 
@@ -259,8 +352,8 @@ def main() -> int:
     parser.add_argument(
         "--lookahead-minutes",
         type=int,
-        default=30,
-        help="Minutes ahead to look for upcoming alarms and sleep until exact trigger time (default: 30).",
+        default=330,
+        help="Minutes ahead to look for upcoming alarms and wait until exact trigger time (default: 330).",
     )
     parser.add_argument(
         "--no-wait",
@@ -306,7 +399,7 @@ def main() -> int:
         return 0
 
     if args.mode in ("all", "crawl"):
-        sync_events(state, force_reparse=args.force_reparse)
+        sync_events(state, force_reparse=args.force_reparse, dry_run=args.dry_run)
 
     if args.mode in ("all", "alarm"):
         process_upcoming_alarms(

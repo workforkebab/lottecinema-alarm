@@ -79,6 +79,45 @@ def build_alarm_message(
     return text, reply_markup
 
 
+def build_new_event_message(
+    event_record: dict[str, Any],
+    schedule_item: dict[str, Any],
+) -> tuple[str, dict[str, Any]]:
+    """Build an announcement message when a new upcoming '무비싸다구' event is first discovered."""
+    title = html.escape(event_record.get("title") or "무비싸다구 이벤트")
+    round_label = html.escape(schedule_item.get("round_label") or "무비싸다구 오픈")
+    price_info = html.escape(
+        schedule_item.get("price_info")
+        or event_record.get("summary")
+        or "선착순 할인 관람권"
+    )
+    open_time_str = format_korean_datetime(schedule_item["open_time_kst"])
+    mobile_url = event_record.get("mobile_url", "https://www.lottecinema.co.kr/NLCMW/Event")
+    web_url = event_record.get("web_url", "https://www.lottecinema.co.kr/NLCHS/Event")
+
+    text = (
+        "📢 <b>[신규 무비싸다구 오픈 예정 안내]</b>\n\n"
+        "새로운 무비싸다구 이벤트 일정이 감지되었습니다!\n"
+        "<i>(오픈 1시간 전 &amp; 5분 전에 다시 알림을 보내드립니다)</i>\n\n"
+        f"🎬 <b>이벤트:</b> {title}\n"
+        f"📌 <b>구분:</b> {round_label}\n"
+        f"🎟 <b>혜택:</b> {price_info}\n"
+        f"🕒 <b>오픈 일시:</b> <code>{open_time_str} (KST)</code>\n\n"
+        f"🔗 <a href=\"{html.escape(mobile_url)}\">모바일 이벤트 페이지</a> | "
+        f"<a href=\"{html.escape(web_url)}\">PC 이벤트 페이지</a>"
+    )
+
+    reply_markup = {
+        "inline_keyboard": [
+            [
+                {"text": "📲 모바일 이벤트 바로가기", "url": mobile_url},
+                {"text": "💻 PC 웹 바로가기", "url": web_url},
+            ]
+        ]
+    }
+    return text, reply_markup
+
+
 def send_telegram_message(
     text: str,
     reply_markup: dict[str, Any] | None = None,
