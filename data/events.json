@@ -229,5 +229,77 @@
     "title": "<수능출제의비밀> 3차 무비싸다구",
     "updated_at_kst": "2026-11-02T10:25:09+09:00",
     "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926104"
+  },
+  "501210016926105": {
+    "event_id": "501210016926105",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/2715a12cf00e43e08fba7d866b829462.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926105",
+    "movie_title": "폭설",
+    "progress_end_date": "2026-11-24",
+    "progress_start_date": "2026-11-05",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "notified_new": true,
+        "open_time_kst": "2026-11-05T11:00:00+09:00",
+        "price_info": "0원 관람권 (선착순 1,000명 / 잔여 1,000매) / 2,000원 관람권 (선착순 2,000명 / 잔여 2,000매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "0원 관람권 (선착순 1,000명 / 잔여 1,000매) / 2,000원 관람권 (선착순 2,000명 / 잔여 2,000매)",
+    "title": "<폭설> 무비싸다구",
+    "updated_at_kst": "2026-11-04T15:56:34+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926105"
+  },
+  "501210016926106": {
+    "event_id": "501210016926106",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/8be9a89aef384f659bb378ababd16fa8.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926106",
+    "movie_title": "숀 더 쉽: 공포의 털보 괴물",
+    "progress_end_date": "2026-11-11",
+    "progress_start_date": "2026-11-05",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "notified_new": true,
+        "open_time_kst": "2026-11-05T14:00:00+09:00",
+        "price_info": "0원 관람권 (선착순 1,340명 / 잔여 1,340매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "0원 관람권 (선착순 1,340명 / 잔여 1,340매)",
+    "title": "<숀더쉽> 2차 무비싸다구",
+    "updated_at_kst": "2026-11-04T15:56:32+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926106"
+  },
+  "501210016926107": {
+    "event_id": "501210016926107",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/3e9671866e4543d39bd011ca8e96ec4d.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926107",
+    "movie_title": "그대, 별처럼",
+    "progress_end_date": "2026-11-11",
+    "progress_start_date": "2026-11-05",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "notified_new": true,
+        "open_time_kst": "2026-11-05T16:00:00+09:00",
+        "price_info": "0원 관람권 (선착순 800명 / 잔여 800매) / 2,000원 관람권 (선착순 2,000명 / 잔여 2,000매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "0원 관람권 (선착순 800명 / 잔여 800매) / 2,000원 관람권 (선착순 2,000명 / 잔여 2,000매)",
+    "title": "<그대별처럼> 3차 무비싸다구",
+    "updated_at_kst": "2026-11-04T15:56:30+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926107"
   }
 }
