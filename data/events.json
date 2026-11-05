@@ -266,7 +266,8 @@
     "schedules": [
       {
         "notified_5m": false,
-        "notified_60m": false,
+        "notified_60m": true,
+        "notified_60m_sent_at": "2026-11-05T13:00:01+09:00",
         "notified_new": true,
         "open_time_kst": "2026-11-05T14:00:00+09:00",
         "price_info": "0원 관람권 (선착순 1,340명 / 잔여 1,340매)",
