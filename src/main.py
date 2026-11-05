@@ -258,15 +258,19 @@ def process_upcoming_alarms(
     grace_past_minutes: int = 45,
     wait_for_exact_time: bool = True,
     dry_run: bool = False,
+    max_continuous_minutes: int = 120,
 ) -> int:
     """
     Check all tracked event schedules for upcoming T-60m (1 hour before) and
     T-5m (5 minutes before) alarms within `lookahead_minutes` (default 5.5 hours,
-    absorbing GitHub Actions' 6-hour cron throttling).
+    absorbing GitHub Actions' cron lag).
     Sleeps in chunks (re-syncing Lotte Cinema every 10 minutes while waiting),
     fires each alarm at the exact target timestamp, and updates `state`.
+    Hands off to a fresh runner after `max_continuous_minutes` once the current
+    event's alarms are sent and the next event is > 45 minutes away.
     """
     sent_count = 0
+    started_monotonic = time.monotonic()
 
     while True:
         now = datetime.now(KST)
@@ -283,6 +287,26 @@ def process_upcoming_alarms(
         next_task = due_tasks[0]
         target_dt: datetime = next_task["target_dt"]
         wait_seconds = (target_dt - now).total_seconds()
+        elapsed_minutes = (time.monotonic() - started_monotonic) / 60.0
+
+        # If we already sent alarm(s) and have been running for a long time, exit cleanly
+        # when the next alarm is still > 45 minutes away so a fresh queued runner takes over
+        # (prevents Azure 3.5h+ spot VM preemption mid-day).
+        if (
+            wait_for_exact_time
+            and sent_count > 0
+            and elapsed_minutes >= max_continuous_minutes
+            and wait_seconds > 45 * 60
+        ):
+            logger.info(
+                "Runner has been active for %.1f minutes and sent %d alarm(s); "
+                "next alarm is %.1f minutes away (%s). Exiting cleanly to hand off to fresh runner.",
+                elapsed_minutes,
+                sent_count,
+                wait_seconds / 60.0,
+                target_dt.isoformat(),
+            )
+            break
 
         if wait_for_exact_time and wait_seconds > 0:
             # Sleep in at most 10-minute chunks so we can re-crawl for newly posted events
