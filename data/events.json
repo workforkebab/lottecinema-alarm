@@ -303,5 +303,53 @@
     "title": "<그대별처럼> 3차 무비싸다구",
     "updated_at_kst": "2026-11-04T15:56:30+09:00",
     "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926107"
+  },
+  "501210016926108": {
+    "event_id": "501210016926108",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/e366fa9392d84ce1b2469fb19e698a95.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926108",
+    "movie_title": "폴2: 데드포인트",
+    "progress_end_date": "2026-11-17",
+    "progress_start_date": "2026-11-06",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "notified_new": true,
+        "open_time_kst": "2026-11-06T11:00:00+09:00",
+        "price_info": "2,000원 관람권 (선착순 2,500명 / 잔여 2,500매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "2,000원 관람권 (선착순 2,500명 / 잔여 2,500매)",
+    "title": "<폴2데드포인트> 무비싸다구",
+    "updated_at_kst": "2026-11-05T16:19:05+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926108"
+  },
+  "501210016926109": {
+    "event_id": "501210016926109",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/037a6ad2e5584e7f8a3b5e725abec079.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926109",
+    "movie_title": "수능, 출제의 비밀",
+    "progress_end_date": "2026-11-12",
+    "progress_start_date": "2026-11-06",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "notified_new": true,
+        "open_time_kst": "2026-11-06T14:00:00+09:00",
+        "price_info": "0원 관람권 (선착순 465명 / 잔여 465매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "0원 관람권 (선착순 465명 / 잔여 465매)",
+    "title": "<수능출제의비밀> 4차 무비싸다구",
+    "updated_at_kst": "2026-11-05T16:19:04+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926109"
   }
 }
