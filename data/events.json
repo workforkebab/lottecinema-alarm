@@ -315,7 +315,8 @@
     "progress_start_date": "2026-11-06",
     "schedules": [
       {
-        "notified_5m": false,
+        "notified_5m": true,
+        "notified_5m_sent_at": "2026-11-06T10:55:01+09:00",
         "notified_60m": true,
         "notified_60m_sent_at": "2026-11-06T10:00:00+09:00",
         "notified_new": true,
