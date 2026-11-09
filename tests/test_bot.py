@@ -136,6 +136,41 @@ class TestMovieSaddaguBot(unittest.TestCase):
                 )
                 self.assertEqual(sent_again, 0)
 
+    def test_60m_alarm_never_hands_off_before_5m_alarm(self) -> None:
+        now = datetime.now(KST).replace(second=0, microsecond=0)
+        open_in_14m = (now + timedelta(minutes=14)).isoformat()
+        state = {
+            "ev_pressure": {
+                "event_id": "ev_pressure",
+                "title": "<프레셔> 무비싸다구",
+                "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event",
+                "web_url": "https://www.lottecinema.co.kr/NLCHS/Event",
+                "schedules": [
+                    {
+                        "round_label": "무비싸다구 오픈",
+                        "open_time_kst": open_in_14m,
+                        "price_info": "0원 관람권",
+                        "notified_60m": False,
+                        "notified_5m": False,
+                    }
+                ],
+            }
+        }
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            temp_events_file = Path(tmp_dir) / "events.json"
+            with patch("src.main.EVENTS_FILE", temp_events_file), patch("src.main.time.sleep"):
+                sent = process_upcoming_alarms(
+                    state,
+                    lookahead_minutes=60,
+                    grace_past_minutes=50,
+                    wait_for_exact_time=True,
+                    dry_run=True,
+                    max_total_runtime_minutes=0,
+                )
+                self.assertEqual(sent, 2)
+                self.assertTrue(state["ev_pressure"]["schedules"][0]["notified_60m"])
+                self.assertTrue(state["ev_pressure"]["schedules"][0]["notified_5m"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -9,6 +9,7 @@ import subprocess
 import sys
 import time
 from typing import Any
+import urllib.request
 
 from src.config import ALARM_OFFSETS_MINUTES, EVENTS_FILE, KST, ROOT_DIR
 from src.crawler import fetch_event_detail, fetch_matching_events
@@ -252,13 +253,44 @@ def _collect_due_tasks(
     return due_tasks
 
 
+def _trigger_workflow_dispatch() -> bool:
+    """Trigger a fresh GitHub Actions workflow_dispatch run before exiting near the job timeout."""
+    token = os.getenv("GITHUB_TOKEN", "").strip()
+    repo = os.getenv("GITHUB_REPOSITORY", "").strip()
+    ref = os.getenv("GITHUB_REF_NAME", "main").strip()
+    if not token or not repo:
+        return False
+    url = f"https://api.github.com/repos/{repo}/actions/workflows/movie_saddagu_bot.yml/dispatches"
+    body = json.dumps({"ref": ref, "inputs": {"action_type": "all"}}).encode("utf-8")
+    req = urllib.request.Request(
+        url,
+        data=body,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Accept": "application/vnd.github+json",
+            "Content-Type": "application/json",
+            "User-Agent": "movie-saddagu-bot",
+        },
+        method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            if resp.status in (200, 201, 204):
+                logger.info("Successfully triggered fresh workflow_dispatch run on %s.", repo)
+                return True
+            logger.warning("workflow_dispatch returned %d", resp.status)
+    except Exception as exc:
+        logger.warning("Failed to trigger workflow_dispatch: %s", exc)
+    return False
+
+
 def process_upcoming_alarms(
     state: dict[str, dict[str, Any]],
     lookahead_minutes: int = 330,
     grace_past_minutes: int = 45,
     wait_for_exact_time: bool = True,
     dry_run: bool = False,
-    max_continuous_minutes: int = 120,
+    max_total_runtime_minutes: int = 320,
 ) -> int:
     """
     Check all tracked event schedules for upcoming T-60m (1 hour before) and
@@ -266,8 +298,9 @@ def process_upcoming_alarms(
     absorbing GitHub Actions' cron lag).
     Sleeps in chunks (re-syncing Lotte Cinema every 10 minutes while waiting),
     fires each alarm at the exact target timestamp, and updates `state`.
-    Hands off to a fresh runner after `max_continuous_minutes` once the current
-    event's alarms are sent and the next event is > 45 minutes away.
+    Only hands off to a fresh runner when waiting for the next alarm would push
+    total runtime past `max_total_runtime_minutes` (320m), and never splits an
+    event's 60m and 5m alarms.
     """
     sent_count = 0
     started_monotonic = time.monotonic()
@@ -287,25 +320,26 @@ def process_upcoming_alarms(
         next_task = due_tasks[0]
         target_dt: datetime = next_task["target_dt"]
         wait_seconds = (target_dt - now).total_seconds()
+        wait_minutes = max(0.0, wait_seconds / 60.0)
         elapsed_minutes = (time.monotonic() - started_monotonic) / 60.0
 
-        # If we already sent alarm(s) and have been running for a long time, exit cleanly
-        # when the next alarm is still > 45 minutes away so a fresh queued runner takes over
-        # (prevents Azure 3.5h+ spot VM preemption mid-day).
+        # Only hand off if waiting for this next alarm would exceed the 320-minute job budget,
+        # AND never hand off right before a 5-minute alarm (keep 60m + 5m on the same runner).
         if (
             wait_for_exact_time
             and sent_count > 0
-            and elapsed_minutes >= max_continuous_minutes
-            and wait_seconds > 45 * 60
+            and next_task["minutes_before"] >= 60
+            and (elapsed_minutes + wait_minutes) > max_total_runtime_minutes
         ):
             logger.info(
-                "Runner has been active for %.1f minutes and sent %d alarm(s); "
-                "next alarm is %.1f minutes away (%s). Exiting cleanly to hand off to fresh runner.",
+                "Runner active %.1fm + next wait %.1fm exceeds %dm budget (%s). "
+                "Triggering fresh runner and exiting cleanly.",
                 elapsed_minutes,
-                sent_count,
-                wait_seconds / 60.0,
+                wait_minutes,
+                max_total_runtime_minutes,
                 target_dt.isoformat(),
             )
+            _trigger_workflow_dispatch()
             break
 
         if wait_for_exact_time and wait_seconds > 0:
