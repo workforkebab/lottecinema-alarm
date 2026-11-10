@@ -378,5 +378,29 @@
     "title": "<프레셔> 무비싸다구",
     "updated_at_kst": "2026-11-06T09:52:48+09:00",
     "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926110"
+  },
+  "501210016926111": {
+    "event_id": "501210016926111",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/84279eeec8c84707b0c37f8260b66057.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926111",
+    "movie_title": "최종면접",
+    "progress_end_date": "2026-11-17",
+    "progress_start_date": "2026-11-11",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "notified_new": true,
+        "open_time_kst": "2026-11-11T14:00:00+09:00",
+        "price_info": "2,000원 관람권 (선착순 2,000명 / 잔여 2,000매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "2,000원 관람권 (선착순 2,000명 / 잔여 2,000매)",
+    "title": "<최종면접> 3차 무비싸다구",
+    "updated_at_kst": "2026-11-10T10:43:50+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926111"
   }
 }
