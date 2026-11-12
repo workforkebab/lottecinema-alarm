@@ -404,5 +404,29 @@
     "title": "<최종면접> 3차 무비싸다구",
     "updated_at_kst": "2026-11-10T10:43:50+09:00",
     "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926111"
+  },
+  "501210016926112": {
+    "event_id": "501210016926112",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/7b9a457b2388434e88a69332ab63debf.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926112",
+    "movie_title": "그대, 별처럼",
+    "progress_end_date": "2026-11-19",
+    "progress_start_date": "2026-11-13",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "notified_new": true,
+        "open_time_kst": "2026-11-13T11:00:00+09:00",
+        "price_info": "0원 관람권 (선착순 2,205명 / 잔여 2,205매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "0원 관람권 (선착순 2,205명 / 잔여 2,205매)",
+    "title": "<그대별처럼> 4차 무비싸다구",
+    "updated_at_kst": "2026-11-12T13:02:32+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926112"
   }
 }
