@@ -430,5 +430,53 @@
     "title": "<그대별처럼> 4차 무비싸다구",
     "updated_at_kst": "2026-11-12T13:02:32+09:00",
     "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926112"
+  },
+  "501210016926113": {
+    "event_id": "501210016926113",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/6c70462dfd4046c4bbd6f8857bb6f521.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926113",
+    "movie_title": "헝거게임 50번째 추첨의 날",
+    "progress_end_date": "2026-11-24",
+    "progress_start_date": "2026-11-16",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "notified_new": true,
+        "open_time_kst": "2026-11-16T11:00:00+09:00",
+        "price_info": "0원 관람권 (선착순 1,500명 / 잔여 1,500매) / 2,000원 관람권 (선착순 2,000명 / 잔여 2,000매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "0원 관람권 (선착순 1,500명 / 잔여 1,500매) / 2,000원 관람권 (선착순 2,000명 / 잔여 2,000매)",
+    "title": "<헝거게임6> 무비싸다구",
+    "updated_at_kst": "2026-11-13T17:00:20+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926113"
+  },
+  "501210016926114": {
+    "event_id": "501210016926114",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/1aa8ee49fdb34e9fb4e272ee3e76b82f.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926114",
+    "movie_title": "아름다운 초저녁달",
+    "progress_end_date": "2026-11-24",
+    "progress_start_date": "2026-11-16",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "notified_new": true,
+        "open_time_kst": "2026-11-16T16:00:00+09:00",
+        "price_info": "2,000원 관람권 (선착순 2,000명 / 잔여 2,000매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "2,000원 관람권 (선착순 2,000명 / 잔여 2,000매)",
+    "title": "<아름다운초저녁달> 무비싸다구",
+    "updated_at_kst": "2026-11-13T17:00:18+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926114"
   }
 }
