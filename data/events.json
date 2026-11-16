@@ -469,9 +469,8 @@
     "schedules": [
       {
         "notified_5m": true,
-        "notified_5m_sent_at": "2026-11-16T15:55:00+09:00",
-        "notified_60m": true,
-        "notified_60m_sent_at": "2026-11-16T15:00:00+09:00",
+        "notified_5m_sent_at": "2026-11-16T15:55:39+09:00",
+        "notified_60m": false,
         "notified_new": true,
         "open_time_kst": "2026-11-16T16:00:00+09:00",
         "price_info": "2,000원 관람권 (선착순 2,000명 / 잔여 2,000매)",
@@ -504,7 +503,7 @@
     ],
     "summary": "2,000원 관람권 (선착순 2,200명 / 잔여 2,200매)",
     "title": "<폴2데드포인트> 2차 무비싸다구",
-    "updated_at_kst": "2026-11-16T11:46:45+09:00",
+    "updated_at_kst": "2026-11-16T15:55:38+09:00",
     "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926115"
   }
 }
