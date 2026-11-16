@@ -480,5 +480,29 @@
     "title": "<아름다운초저녁달> 무비싸다구",
     "updated_at_kst": "2026-11-13T17:00:18+09:00",
     "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926114"
+  },
+  "501210016926115": {
+    "event_id": "501210016926115",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/0897d09269734538a16e39983c9e3721.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926115",
+    "movie_title": "폴2: 데드포인트",
+    "progress_end_date": "2026-11-23",
+    "progress_start_date": "2026-11-17",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "notified_new": true,
+        "open_time_kst": "2026-11-17T16:00:00+09:00",
+        "price_info": "2,000원 관람권 (선착순 2,200명 / 잔여 2,200매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "2,000원 관람권 (선착순 2,200명 / 잔여 2,200매)",
+    "title": "<폴2데드포인트> 2차 무비싸다구",
+    "updated_at_kst": "2026-11-16T11:46:45+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926115"
   }
 }
