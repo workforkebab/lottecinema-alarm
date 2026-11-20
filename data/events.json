@@ -583,5 +583,77 @@
     "title": "<슬픈열대> 무비싸다구",
     "updated_at_kst": "2026-11-18T10:30:54+09:00",
     "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926118"
+  },
+  "501210016926119": {
+    "event_id": "501210016926119",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/f657c77f43a64e28bd4e4b8abc43791d.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926119",
+    "movie_title": "미트 페어런츠 4",
+    "progress_end_date": "2026-12-01",
+    "progress_start_date": "2026-11-23",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "notified_new": true,
+        "open_time_kst": "2026-11-23T11:00:00+09:00",
+        "price_info": "0원 관람권 (선착순 3,200명 / 잔여 3,200매) / 2,000원 관람권 (선착순 3,400명 / 잔여 3,400매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "0원 관람권 (선착순 3,200명 / 잔여 3,200매) / 2,000원 관람권 (선착순 3,400명 / 잔여 3,400매)",
+    "title": "<미트페어런츠4> 무비싸다구",
+    "updated_at_kst": "2026-11-20T22:28:37+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926119"
+  },
+  "501210016926120": {
+    "event_id": "501210016926120",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/e04910c5f6a549d384f1b6b482cc446e.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926120",
+    "movie_title": "라파엘",
+    "progress_end_date": "2026-12-01",
+    "progress_start_date": "2026-11-23",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "notified_new": true,
+        "open_time_kst": "2026-11-23T14:00:00+09:00",
+        "price_info": "0원 관람권 (선착순 2,000명 / 잔여 2,000매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "0원 관람권 (선착순 2,000명 / 잔여 2,000매)",
+    "title": "<라파엘> 무비싸다구",
+    "updated_at_kst": "2026-11-20T22:28:35+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926120"
+  },
+  "501210016926121": {
+    "event_id": "501210016926121",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/d34d18d5953c4a1fa957a0501abea50c.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926121",
+    "movie_title": "펭구와 친구들: 얼음꽁꽁 어드벤처",
+    "progress_end_date": "2026-12-01",
+    "progress_start_date": "2026-11-23",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "notified_new": true,
+        "open_time_kst": "2026-11-23T16:00:00+09:00",
+        "price_info": "5,000원 관람권 (선착순 2,000명 / 잔여 2,000매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "5,000원 관람권 (선착순 2,000명 / 잔여 2,000매)",
+    "title": "<펭구와친구들> 무비싸다구",
+    "updated_at_kst": "2026-11-20T22:28:32+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926121"
   }
 }
