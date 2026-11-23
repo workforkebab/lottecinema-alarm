@@ -704,5 +704,29 @@
     "title": "<폭설> 2차 무비싸다구",
     "updated_at_kst": "2026-11-23T10:10:15+09:00",
     "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926123"
+  },
+  "501210016926124": {
+    "event_id": "501210016926124",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/443afa011f9d499abc0d85762d90be51.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926124",
+    "movie_title": "헝거게임 50번째 추첨의 날",
+    "progress_end_date": "2026-11-30",
+    "progress_start_date": "2026-11-24",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "notified_new": true,
+        "open_time_kst": "2026-11-24T16:00:00+09:00",
+        "price_info": "2,000원 관람권 (선착순 1,500명 / 잔여 1,500매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "2,000원 관람권 (선착순 1,500명 / 잔여 1,500매)",
+    "title": "<헝거게임6> 2차 무비싸다구",
+    "updated_at_kst": "2026-11-23T10:20:30+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926124"
   }
 }
