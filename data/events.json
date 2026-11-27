@@ -843,5 +843,29 @@
     "title": "<최종면접> 5차 무비싸다구",
     "updated_at_kst": "2026-11-25T13:32:07+09:00",
     "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926128"
+  },
+  "501210016926129": {
+    "event_id": "501210016926129",
+    "image_urls": [
+      "https://cf.lottecinema.co.kr/Media/Event/9ef6de2f87a843b7979ec47aa1211e9e.jpg"
+    ],
+    "mobile_url": "https://www.lottecinema.co.kr/NLCMW/Event/EventTemplateSpeedMulti?eventId=501210016926129",
+    "movie_title": "머지않아, 이별입니다",
+    "progress_end_date": "2026-12-08",
+    "progress_start_date": "2026-11-30",
+    "schedules": [
+      {
+        "notified_5m": false,
+        "notified_60m": false,
+        "notified_new": true,
+        "open_time_kst": "2026-11-30T11:00:00+09:00",
+        "price_info": "2,000원 관람권 (선착순 3,500명 / 잔여 3,500매)",
+        "round_label": "무비싸다구 오픈"
+      }
+    ],
+    "summary": "2,000원 관람권 (선착순 3,500명 / 잔여 3,500매)",
+    "title": "<머지않아이별입니다> 무비싸다구",
+    "updated_at_kst": "2026-11-27T16:26:17+09:00",
+    "web_url": "https://www.lottecinema.co.kr/NLCHS/Event/EventTemplateSpeedMulti?eventId=501210016926129"
   }
 }
